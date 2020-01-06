@@ -1,6 +1,7 @@
 const Blog = require('../models/blog')
 const User = require('../models/user')
 
+const hashedPassword = '$2b$10$vOrH05m7uDmexPnSvWMf6OfPSuVi6H8gIL7R2zuAfe9CYi1LgRZWm' // salainen
 const initialUsers = [
   {
     _id: '5e13a6811c9d440000a3971e',
@@ -9,7 +10,7 @@ const initialUsers = [
     ],
     username: 'mchan',
     name: 'Michael Chan',
-    passwordHash: '$2b$10$cwIdI7gz5SFE9/dy5F8OwepAk7RGUqV0M0ZqqThMzp/T2dum5v2Ku',
+    passwordHash: hashedPassword,
     __v: 0,
   },
   {
@@ -20,7 +21,7 @@ const initialUsers = [
     ],
     username: 'ewdijkstra',
     name: 'Edsger W. Dijkstra',
-    passwordHash: '$2b$10$cwIdI7gz5SFE9/dy5F8OwepAk7RGUqV0M0ZqqThMzp/T2dum5v2Ku',
+    passwordHash: hashedPassword,
     __v: 0,
   },
   {
@@ -32,7 +33,7 @@ const initialUsers = [
     ],
     username: 'unclebob',
     name: 'Robert C. Martin',
-    passwordHash: '$2b$10$cwIdI7gz5SFE9/dy5F8OwepAk7RGUqV0M0ZqqThMzp/T2dum5v2Ku',
+    passwordHash: hashedPassword,
     __v: 0,
   }
 ]
