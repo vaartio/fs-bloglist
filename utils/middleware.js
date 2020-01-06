@@ -1,17 +1,19 @@
-const requestLogger = (request, response, next) => {
-  console.log('Method:', request.method)
-  console.log('Path:  ', request.path)
-  console.log('Body:  ', request.body)
-  console.log('---')
+const logger = require('./logger')
+
+const requestLogger = async (request, response, next) => {
+  logger.info('Method:', request.method)
+  logger.info('Path:  ', request.path)
+  logger.info('Body:  ', request.body)
+  logger.info('---')
   next()
 }
 
-const unknownEndpoint = (request, response) => {
+const unknownEndpoint = async (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' })
 }
 
-const errorHandler = (error, request, response, next) => {
-  console.error(error.message)
+const errorHandler = async (error, request, response, next) => {
+  logger.error(error.message)
 
   if (error.name === 'CastError' && error.kind === 'ObjectId') {
     return response.status(400).send({ error: 'malformatted id' })
