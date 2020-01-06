@@ -7,7 +7,7 @@
     "start": "cross-env NODE_ENV=production node index.js",
     "watch": "cross-env NODE_ENV=development nodemon index.js",
     "test": "cross-env NODE_ENV=test jest --verbose --runInBand",
-    "test:api": "cross-env NODE_ENV=test jest --verbose tests/blog_api.test.js --runInBand",
+    "test:api": "cross-env NODE_ENV=test jest --verbose tests/user_api.test.js --runInBand -t 'when there is initially one user at db'",
     "deploy": "git push heroku master",
     "logs:prod": "heroku logs --tail",
     "lint": "eslint ."
@@ -30,6 +30,7 @@
     "supertest": "4.0.2"
   },
   "dependencies": {
+    "bcrypt": "3.0.7",
     "cors": "2.8.5",
     "dotenv": "8.2.0",
     "express": "4.17.1",

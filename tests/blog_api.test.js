@@ -3,10 +3,13 @@ const supertest = require('supertest')
 const helper = require('./test_helper')
 const app = require('../app')
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
 const request = supertest(app)
 
 beforeEach(async () => {
+  await User.deleteMany({})
+  await User.insertMany(helper.initialUsers)
   await Blog.deleteMany({})
   await Blog.insertMany(helper.initialBlogs)
 })
@@ -34,9 +37,10 @@ test('blogs have id property', async () => {
 test('new blog post can be added', async () => {
   const newBlogPost = {
     'title': 'Test blog post',
-    'author': 'Acme',
+    'author': helper.initialUsers[0].name,
     'url': 'http://localhost:3003/api/blogs',
     'likes': 1,
+    'user': helper.initialUsers[0]._id,
   }
   await request
     .post('/api/blogs')
@@ -56,8 +60,9 @@ test('new blog post can be added', async () => {
 test('default value for likes is zero', async () => {
   const newBlogPost = {
     'title': 'Test blog post',
-    'author': 'Acme',
+    'author': helper.initialUsers[0].name,
     'url': 'http://localhost:3003/api/blogs',
+    'user': helper.initialUsers[0]._id,
   }
   const response = await request
     .post('/api/blogs')
@@ -70,8 +75,9 @@ test('default value for likes is zero', async () => {
 
 test('title field is mandatory', async () => {
   const newBlogPost = {
-    'author': 'Acme',
+    'author': helper.initialUsers[0].name,
     'url': 'http://localhost:3003/api/blogs',
+    'user': helper.initialUsers[0]._id,
   }
   await request
     .post('/api/blogs')
@@ -84,6 +90,7 @@ test('url field is mandatory', async () => {
   const newBlogPost = {
     'title': 'Test blog post',
     'author': 'Acme',
+    'user': helper.initialUsers[0]._id,
   }
   await request
     .post('/api/blogs')
