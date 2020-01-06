@@ -53,6 +53,45 @@ test('new blog post can be added', async () => {
   expect(response.body.map(blog => blog.title)).toContain(newBlogPost.title)
 })
 
+test('default value for likes is zero', async () => {
+  const newBlogPost = {
+    'title': 'Test blog post',
+    'author': 'Acme',
+    'url': 'http://localhost:3003/api/blogs',
+  }
+  const response = await request
+    .post('/api/blogs')
+    .send(newBlogPost)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  expect(response.body.likes).toEqual(0)
+})
+
+test('title field is mandatory', async () => {
+  const newBlogPost = {
+    'author': 'Acme',
+    'url': 'http://localhost:3003/api/blogs',
+  }
+  await request
+    .post('/api/blogs')
+    .send(newBlogPost)
+    .expect(400)
+    .expect('Content-Type', /application\/json/)
+})
+
+test('url field is mandatory', async () => {
+  const newBlogPost = {
+    'title': 'Test blog post',
+    'author': 'Acme',
+  }
+  await request
+    .post('/api/blogs')
+    .send(newBlogPost)
+    .expect(400)
+    .expect('Content-Type', /application\/json/)
+})
+
 afterAll(async () => {
   mongoose.connection.close()
 })

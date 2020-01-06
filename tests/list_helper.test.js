@@ -1,4 +1,4 @@
-const helper = require('./test_helper');
+const helper = require('./test_helper')
 const listHelper = require('../utils/list_helper')
 
 const blogs = helper.initialBlogs
