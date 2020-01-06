@@ -20,6 +20,39 @@ test('blogs are returned as json', async () => {
   expect(response.body.length).toBe(helper.initialBlogs.length)
 })
 
+test('blogs have id property', async () => {
+  const response = await request
+    .get('/api/blogs')
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+
+  response.body.map(blog => {
+    expect(blog.id).toBeDefined()
+  })
+})
+
+test('new blog post can be added', async () => {
+  const newBlogPost = {
+    'title': 'Test blog post',
+    'author': 'Acme',
+    'url': 'http://localhost:3003/api/blogs',
+    'likes': 1,
+  }
+  await request
+    .post('/api/blogs')
+    .send(newBlogPost)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  const response = await request
+    .get('/api/blogs')
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+
+  expect(response.body.length).toBe(helper.initialBlogs.length + 1)
+  expect(response.body.map(blog => blog.title)).toContain(newBlogPost.title)
+})
+
 afterAll(async () => {
   mongoose.connection.close()
 })
