@@ -92,6 +92,37 @@ test('url field is mandatory', async () => {
     .expect('Content-Type', /application\/json/)
 })
 
+test('remove a blog post', async () => {
+  await request
+    .delete(`/api/blogs/${helper.initialBlogs[0]._id}`)
+    .expect(204)
+
+  const response = await request
+    .get('/api/blogs')
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+
+  expect(response.body.length).toBe(helper.initialBlogs.length - 1)
+})
+
+test('edit a blog post', async () => {
+  const modifiedBlog = { ...helper.initialBlogs[0] }
+  modifiedBlog.likes = 10
+  await request
+    .put(`/api/blogs/${modifiedBlog._id}`)
+    .send(modifiedBlog)
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+
+  const response = await request
+    .get(`/api/blogs/${modifiedBlog._id}`)
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+
+  expect(response.body.id).toEqual(helper.initialBlogs[0]._id)
+  expect(response.body.likes).toEqual(10)
+})
+
 afterAll(async () => {
   mongoose.connection.close()
 })
